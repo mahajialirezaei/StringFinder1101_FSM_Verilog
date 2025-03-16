@@ -13,55 +13,52 @@ always @(CS, x) begin
         A: begin
             if(x == 0) begin
                 NS = A;
-                out = 1'b0;
             end else begin
                 NS = B;
-                out = 1'b0;
             end
         end
         
         B: begin
             if(x == 0) begin
                 NS = A;
-                out = 1'b0;
             end else begin
                 NS = C;
-                out = 1'b0;
             end
         end
         
         C: begin
             if(x == 0) begin
                 NS = D;
-                out = 1'b0;
             end else begin
                 NS = C;
-                out = 1'b0;
             end
         end
         
         D: begin
             if(x == 0) begin
                 NS = A;
-                out = 1'b0;
             end else begin
                 NS = B;
-                out = 1'b1;
             end
         end
         
         default: begin
             NS = A;
-            out = 1'b0;
         end
     endcase
 end
 
-always @(posedge clk or negedge clr) begin
+always @(posedge clk, negedge clr) begin
     if(clr == 0)
         CS <= A;
     else
         CS <= NS;
 end
 
+always @(posedge clk) begin
+    if (CS == D && x == 1)
+        out <= 1'b1;
+    else 
+        out <= 1'b0;
+end
 endmodule
